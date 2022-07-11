@@ -1,0 +1,16 @@
+group = 'com.berk2s'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+allprojects {
+    apply from: "$rootProject.projectDir/gradle/config/java-config.gradle"
+    apply from: "$rootProject.projectDir/gradle/config/repositories.gradle"
+    apply from: "$rootProject.projectDir/gradle/config/dependencies.gradle"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
