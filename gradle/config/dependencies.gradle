@@ -1,9 +1,32 @@
+apply plugin: 'io.spring.dependency-management'
+
 ext {
     javaVersion = '11'
     junitVersion = '5.8.2'
+    slf4jVersion = '1.7.30'
+    logbackVersion = '1.2.3'
+    lombokVersion = '1.18.22'
+    mockitoVersion = '4.6.1'
+    commonsLang3Version = '3.12.0'
+    commonTextVersion = '1.9'
 }
 
 dependencies {
+    implementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: rootProject.slf4jVersion
+    implementation group: 'org.slf4j', name: 'log4j-over-slf4j', version: rootProject.slf4jVersion
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: rootProject.logbackVersion
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: rootProject.slf4jVersion
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: rootProject.commonsLang3Version
+    implementation group: 'org.apache.commons', name: 'commons-text', version: rootProject.commonTextVersion
+
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: rootProject.mockitoVersion
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: rootProject.junitVersion
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: rootProject.junitVersion
+}
+
+dependencyManagement {
+    dependencies {
+        dependency group: 'org.projectlombok', name: 'lombok', version: rootProject.lombokVersion
+    }
 }

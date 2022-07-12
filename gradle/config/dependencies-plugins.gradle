@@ -1,0 +1,7 @@
+def version = [
+        dependencyManagement: '1.0.11.RELEASE',
+]
+
+dependencies {
+    classpath group: 'io.spring.gradle', name: 'dependency-management-plugin', version: version.dependencyManagement
+}
