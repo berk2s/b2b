@@ -18,7 +18,7 @@ public class CategoryValidationTest {
     @Test
     void should_throw_exception_when_title_empty() {
         var ex = assertThrows(EmptyCategoryTitle.class,
-                () -> Category.newCategory(null,null, null, null));
+                () -> Category.builder().title(null).build());
 
         assertEquals("category.title.empty", ex.getMessage());
     }
@@ -27,7 +27,10 @@ public class CategoryValidationTest {
     @Test
     void should_throw_exception_when_slug_empty() {
         var ex = assertThrows(EmptyCategorySlug.class,
-                () -> Category.newCategory(null,"title", null, null));
+                () -> Category.builder()
+                        .title(RandomStringUtils.randomAlphabetic(10))
+                        .slug(null)
+                        .build());
 
         assertEquals("category.slug.empty", ex.getMessage());
     }
@@ -36,7 +39,10 @@ public class CategoryValidationTest {
     @Test
     void should_throw_exception_when_title_too_short() {
         var ex = assertThrows(TooShortCategoryTitle.class,
-                () -> Category.newCategory(null, RandomStringUtils.randomAlphabetic(2), "Slug", null));
+                () -> Category.builder()
+                        .title(RandomStringUtils.randomAlphabetic(2))
+                        .slug(RandomStringUtils.randomAlphabetic(10))
+                        .build());
 
         assertEquals("category.title.tooShort", ex.getMessage());
     }
@@ -45,7 +51,10 @@ public class CategoryValidationTest {
     @Test
     void should_throw_exception_when_slug_too_short() {
         var ex = assertThrows(TooShortCategorySlug.class,
-                () -> Category.newCategory(null, "title", RandomStringUtils.random(2), null));
+                () -> Category.builder()
+                        .title(RandomStringUtils.randomAlphabetic(10))
+                        .slug(RandomStringUtils.randomAlphabetic(2))
+                        .build());
 
         assertEquals("category.slug.tooShort", ex.getMessage());
     }

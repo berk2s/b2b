@@ -9,5 +9,6 @@ import usecase.UseCase;
 public class CreateCategory implements UseCase {
 
     private String title;
+    private String slug;
     private Long parentId;
 }

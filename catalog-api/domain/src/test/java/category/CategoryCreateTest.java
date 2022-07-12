@@ -34,6 +34,7 @@ public class CategoryCreateTest {
 
         var createCategory = CreateCategory.builder()
                 .title(RandomStringUtils.randomAlphabetic(5))
+                .slug(RandomStringUtils.randomAlphabetic(5))
                 .parentId(1L)
                 .build();
 
@@ -43,6 +44,7 @@ public class CategoryCreateTest {
         // Then
         assertThat(category).isNotNull()
                         .returns(createCategory.getTitle(), Category::getTitle)
+                        .returns(createCategory.getSlug(), Category::getSlug)
                         .returns(createCategory.getParentId(), i -> i.getParent().getId());
 
         verify(categoryPort, times(1)).create(any());

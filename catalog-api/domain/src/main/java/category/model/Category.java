@@ -13,45 +13,19 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 public class Category implements Comparable<Category> {
 
-    private final Long id;
-    private final String title;
-    private final String slug;
+    private Long id;
+    private String title;
+    private String slug;
     private Category parent;
+
+    @Builder.Default
     private Set<Category> child = new TreeSet<>();
-
-    public static Category newCategory(Long id, String title, String slug, Category parent) {
-        var category = new Category(id, title, slug);
-        category.validate();
-        category.setParent(parent);
-
-        return category;
-    }
-
-    public void validate() {
-        if (StringUtils.isEmpty(title)) {
-            log.warn("Category title is empty [category: {}]", this);
-            throw new EmptyCategoryTitle("category.title.empty");
-        }
-
-        if (StringUtils.isEmpty(slug)) {
-            log.warn("Category slug is empty [category: {}]", this);
-            throw new EmptyCategorySlug("category.slug.empty");
-        }
-
-        if (StringUtils.trim(title).length() < 3) {
-            log.warn("Category title length is too short [category: {}]", this);
-            throw new TooShortCategoryTitle("category.title.tooShort");
-        }
-
-        if (StringUtils.trim(slug).length() < 3) {
-            log.warn("Category slug length is too short [category: {}]", this);
-            throw new TooShortCategorySlug("category.slug.tooShort");
-        }
-    }
 
     public Set<Category> getParents() {
         Set<Category> parents = new TreeSet<>();
@@ -104,5 +78,36 @@ public class Category implements Comparable<Category> {
     @Override
     public int hashCode() {
         return Objects.hash(id, title);
+    }
+
+    public static CategoryBuilder builder() {
+        return new CustomBuilder();
+    }
+
+    private static class CustomBuilder extends CategoryBuilder {
+
+        public Category build() {
+            if (StringUtils.isEmpty(super.title)) {
+                log.warn("Category title is empty [category: {}]", this);
+                throw new EmptyCategoryTitle("category.title.empty");
+            }
+
+            if (StringUtils.isEmpty(super.slug)) {
+                log.warn("Category slug is empty [category: {}]", this);
+                throw new EmptyCategorySlug("category.slug.empty");
+            }
+
+            if (StringUtils.trim(super.title).length() < 3) {
+                log.warn("Category title length is too short [category: {}]", this);
+                throw new TooShortCategoryTitle("category.title.tooShort");
+            }
+
+            if (StringUtils.trim(super.slug).length() < 3) {
+                log.warn("Category slug length is too short [category: {}]", this);
+                throw new TooShortCategorySlug("category.slug.tooShort");
+            }
+
+            return super.build();
+        }
     }
 }

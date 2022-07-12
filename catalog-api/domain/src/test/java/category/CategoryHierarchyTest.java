@@ -14,9 +14,26 @@ public class CategoryHierarchyTest {
     @Test
     void should_calculate_parents_successfully() {
         // Given
-        var parent1 = Category.newCategory(1L,"Top parent", "top-parent", null);
-        var parent2 = Category.newCategory(2L,"Mid parent", "mid-parent", parent1);
-        var child = Category.newCategory(3L,"Child", "child", parent2);
+        var parent1 = Category.builder()
+                .id(1L)
+                .title("Top parent")
+                .slug("top-parent")
+                .parent(null)
+                .build();
+
+        var parent2 = Category.builder()
+                .id(2L)
+                .title("Mid parent")
+                .slug("mid-parent")
+                .parent(parent1)
+                .build();
+
+        var child = Category.builder()
+                .id(3L)
+                .title("Child")
+                .slug("child")
+                .parent(parent2)
+                .build();
 
         // When
         TreeSet<Category> hierarchy = (TreeSet<Category>) child.getParents();
@@ -30,8 +47,19 @@ public class CategoryHierarchyTest {
     @Test
     void should_add_category_as_child_successfully() {
         // Given
-        var parent = Category.newCategory(1L, "Parent", "parent", null);
-        var child = Category.newCategory(1L, "Child", "child",null);
+        var parent = Category.builder()
+                .id(1L)
+                .title("Top parent")
+                .slug("top-parent")
+                .parent(null)
+                .build();
+
+        var child = Category.builder()
+                .id(3L)
+                .title("Child")
+                .slug("child")
+                .parent(parent)
+                .build();
 
         // When
         parent.addChild(child);
