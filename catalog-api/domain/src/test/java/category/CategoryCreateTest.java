@@ -1,6 +1,5 @@
 package category;
 
-import category.model.Category;
 import category.port.CategoryPort;
 import category.usecase.CreateCategory;
 import category.usecase.handler.CreateCategoryUseCaseHandler;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static factory.MockFactory.answerCreateCategory;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -25,12 +25,7 @@ public class CategoryCreateTest {
     @Test
     void should_create_category_successfully() {
         // Given
-        when(categoryPort.create(any())).thenAnswer(i -> {
-            var createCategory = (CreateCategory) i.getArguments()[0];
-            var category = Category.newCategory(1L, createCategory.getTitle(), Category.newCategory(createCategory.getParentId(), "", null));
-
-            return category;
-        });
+        when(categoryPort.create(any())).thenAnswer(answerCreateCategory());
 
         var createCategory = CreateCategory.builder()
                 .title(RandomStringUtils.randomAlphabetic(5))
