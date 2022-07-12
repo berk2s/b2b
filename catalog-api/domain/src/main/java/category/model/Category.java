@@ -1,9 +1,6 @@
 package category.model;
 
-import category.exception.EmptyCategorySlug;
-import category.exception.EmptyCategoryTitle;
-import category.exception.TooShortCategorySlug;
-import category.exception.TooShortCategoryTitle;
+import category.exception.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +19,9 @@ public class Category implements Comparable<Category> {
     private Long id;
     private String title;
     private String slug;
+    private String seoTitle;
+    private String metaDesc;
+    private String imgUrl;
     private Category parent;
 
     @Builder.Default
@@ -89,22 +89,32 @@ public class Category implements Comparable<Category> {
         public Category build() {
             if (StringUtils.isEmpty(super.title)) {
                 log.warn("Category title is empty [category: {}]", this);
-                throw new EmptyCategoryTitle("category.title.empty");
+                throw new EmptyTitle("category.title.empty");
             }
 
             if (StringUtils.isEmpty(super.slug)) {
                 log.warn("Category slug is empty [category: {}]", this);
-                throw new EmptyCategorySlug("category.slug.empty");
+                throw new EmptySlug("category.slug.empty");
             }
 
-            if (StringUtils.trim(super.title).length() < 3) {
+            if (StringUtils.trim(super.title).length() < 3 || StringUtils.trim(super.title).length() > 50) {
                 log.warn("Category title length is too short [category: {}]", this);
-                throw new TooShortCategoryTitle("category.title.tooShort");
+                throw new OutOfRangeTitle("category.title.outOfRange");
             }
 
-            if (StringUtils.trim(super.slug).length() < 3) {
-                log.warn("Category slug length is too short [category: {}]", this);
-                throw new TooShortCategorySlug("category.slug.tooShort");
+            if (StringUtils.trim(super.slug).length() < 3 || StringUtils.trim(super.slug).length() > 50) {
+                log.warn("Category slug length is too short or long [category: {}]", this);
+                throw new OutOfRangeSlug("category.slug.outOfRange");
+            }
+
+            if (StringUtils.isNotEmpty(super.seoTitle) && StringUtils.trim(super.seoTitle).length() > 50) {
+                log.warn("Too long seo title [category: {}]", this);
+                throw new OutOfRangeSeoTitle("category.seoTitle.tooLong");
+            }
+
+            if (StringUtils.isNotEmpty(super.metaDesc) && StringUtils.trim(super.metaDesc).length() > 150) {
+                log.warn("Too long meta desc [category: {}]", this);
+                throw new OutOfRangeMetaDesc("category.metaDesc.tooLong");
             }
 
             return super.build();
