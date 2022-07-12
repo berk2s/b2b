@@ -1,3 +1,4 @@
 rootProject.name = 'b2b'
 include 'catalog-api'
 include 'catalog-api:domain'
+

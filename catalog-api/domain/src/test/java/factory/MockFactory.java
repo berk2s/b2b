@@ -9,7 +9,10 @@ public final class MockFactory {
     public static Answer<Object> answerCreateCategory() {
         return i -> {
             var createCategory = (CreateCategory) i.getArguments()[0];
-            var category = Category.newCategory(1L, createCategory.getTitle(), Category.newCategory(createCategory.getParentId(), "", null));
+            var category = Category.newCategory(1L,
+                    createCategory.getTitle(),
+                    "slug",
+                    Category.newCategory(createCategory.getParentId(), "Title", "Slug", null));
 
             return category;
         };

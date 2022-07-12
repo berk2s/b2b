@@ -1,8 +1,12 @@
 package category.model;
 
+import category.exception.EmptyCategorySlug;
 import category.exception.EmptyCategoryTitle;
+import category.exception.TooShortCategorySlug;
+import category.exception.TooShortCategoryTitle;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 import java.util.Set;
@@ -15,11 +19,12 @@ public class Category implements Comparable<Category> {
 
     private final Long id;
     private final String title;
+    private final String slug;
     private Category parent;
     private Set<Category> child = new TreeSet<>();
 
-    public static Category newCategory(Long id, String title, Category parent) {
-        var category = new Category(id, title);
+    public static Category newCategory(Long id, String title, String slug, Category parent) {
+        var category = new Category(id, title, slug);
         category.validate();
         category.setParent(parent);
 
@@ -27,9 +32,24 @@ public class Category implements Comparable<Category> {
     }
 
     public void validate() {
-        if (title == null) {
+        if (StringUtils.isEmpty(title)) {
             log.warn("Category title is empty [category: {}]", this);
             throw new EmptyCategoryTitle("category.title.empty");
+        }
+
+        if (StringUtils.isEmpty(slug)) {
+            log.warn("Category slug is empty [category: {}]", this);
+            throw new EmptyCategorySlug("category.slug.empty");
+        }
+
+        if (StringUtils.trim(title).length() < 3) {
+            log.warn("Category title length is too short [category: {}]", this);
+            throw new TooShortCategoryTitle("category.title.tooShort");
+        }
+
+        if (StringUtils.trim(slug).length() < 3) {
+            log.warn("Category slug length is too short [category: {}]", this);
+            throw new TooShortCategorySlug("category.slug.tooShort");
         }
     }
 

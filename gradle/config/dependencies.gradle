@@ -3,10 +3,13 @@ apply plugin: 'io.spring.dependency-management'
 ext {
     javaVersion = '11'
     junitVersion = '5.8.2'
+    assertJVersion = '3.23.1'
+    mockitoVersion = '4.6.1'
+    mockitoJunitVersion = '4.6.1'
+
     slf4jVersion = '1.7.30'
     logbackVersion = '1.2.3'
     lombokVersion = '1.18.22'
-    mockitoVersion = '4.6.1'
     commonsLang3Version = '3.12.0'
     commonTextVersion = '1.9'
 }
@@ -21,7 +24,9 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-text', version: rootProject.commonTextVersion
 
     testImplementation group: 'org.mockito', name: 'mockito-core', version: rootProject.mockitoVersion
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: rootProject.mockitoJunitVersion
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: rootProject.junitVersion
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: rootProject.assertJVersion
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: rootProject.junitVersion
 }
 
