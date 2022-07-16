@@ -33,7 +33,7 @@ jobs:
         with:
           apikey: 2a0ad462-59bb-4c4d-9d43-ab3705aad4c8
           project_id: 68b8e211-fbee-4cc5-9794-34912c05452c
-          command: ./gradlew clean :catalog-api:build :catalog-api:bootJar -Dorg.gradle.daemon=false --rerun-tasks
+          command: ./gradlew clean :catalog-api:build -Dorg.gradle.daemon=false --rerun-tasks
 
       - name: Upload Jar File
         uses: actions/upload-artifact@v1
