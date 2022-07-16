@@ -1,2 +1,10 @@
 group 'com.berk2s'
 version '1.0-SNAPSHOT'
+
+build {
+    dependsOn 'domain:build'
+}
+
+test {
+    dependsOn 'domain:test'
+}
