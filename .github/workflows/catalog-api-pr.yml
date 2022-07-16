@@ -1,4 +1,4 @@
-name: Catalog API Run Build On Each Pull Request
+name: Catalog API Run Build and Test On Each Pull Request
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
@@ -29,4 +29,4 @@ jobs:
 
       - name: Build
         run: |
-          ./gradlew verifierStubsJar :catalog-api:build -Dorg.gradle.daemon=false
+          ./gradlew :catalog-api:test :catalog-api:build -Dorg.gradle.daemon=false
