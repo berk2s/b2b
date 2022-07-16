@@ -10,4 +10,6 @@ public interface CategoryPort {
     Category retrieve(Long categoryId);
 
     Category update(Category category);
+
+    void delete(Long categoryId);
 }
